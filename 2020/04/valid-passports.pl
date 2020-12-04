@@ -9,9 +9,8 @@ my $valid_passports_count = 0;
 $/ = '';                        # paragraph mode
 PASSPORT:
 while (<>) {
-    chomp;
     s/\n/ /g;                   # remove newlines
-    my %fields = map {split /:/} split /\s+/;
+    my %fields = split /[ :]/;
     foreach my $key (qw/byr iyr eyr hgt hcl ecl pid/) {
         next PASSPORT unless exists $fields{$key};
     }
