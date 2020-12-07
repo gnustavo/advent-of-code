@@ -2,7 +2,7 @@
 
 use 5.030;
 
-my (@bags, %bags);
+my %bags;
 
 sub bag {
     my ($color) = @_;
@@ -12,7 +12,6 @@ sub bag {
             contains => [],
             is_contained_in => [],
         };
-        push @bags, $bag;
         $bags{$color} = $bag;
     }
     return $bags{$color};
@@ -31,7 +30,7 @@ while (<>) {
 }
 
 # Create the 'is_contained_in' graph
-foreach my $bag (@bags) {
+foreach my $bag (values %bags) {
     foreach my $contained_bag (@{$bag->{contains}}) {
         push @{$contained_bag->{is_contained_in}}, $bag;
     }
@@ -50,6 +49,4 @@ while (@colors_to_consider) {
     }
 }
 
-#$,=', ';
-#say sort keys %colors_considered;
 say scalar(values %colors_considered) - 1;
