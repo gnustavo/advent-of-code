@@ -1,21 +1,15 @@
 #!/usr/bin/env perl
 
 use 5.030;
+use warnings;
 
+my @program = map {[split / /]} <>;
+my @seen = (0) x @program;
 my ($acc, $pc) = (0, 0);
-my @program;
 
-while (<>) {
-    if (/(acc|jmp|nop) ([-+]\d+)/) {
-        push @program, [0, $1, 0+$2];
-    } else {
-        die "Invalid instruction: $_";
-    }
-}
-
-while ($program[$pc][0] == 0) {
-    $program[$pc][0] = 1;
-    my ($op, $num) = @{$program[$pc]}[1, 2];
+while (! $seen[$pc]) {
+    $seen[$pc] = 1;
+    my ($op, $num) = @{$program[$pc]};
     if ($op eq 'acc') {
         $acc += $num;
         $pc += 1;
@@ -23,6 +17,8 @@ while ($program[$pc][0] == 0) {
         $pc += $num;
     } elsif ($op eq 'nop') {
         $pc += 1;
+    } else {
+        die "Invalid op ($op) at line $pc\n";
     }
 }
 

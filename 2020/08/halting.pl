@@ -2,15 +2,7 @@
 
 use 5.030;
 
-my @program;
-
-while (<>) {
-    if (/(acc|jmp|nop) ([-+]\d+)/) {
-        push @program, [$1, 0+$2];
-    } else {
-        die "Invalid instruction: $_";
-    }
-}
+my @program = map {[split / /]} <>;
 
 for my $i (0 .. $#program) {
     if ($program[$i][0] =~ /(jmp|nop)/) {
