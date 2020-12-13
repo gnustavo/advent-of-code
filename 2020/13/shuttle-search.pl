@@ -12,7 +12,8 @@ while (<>) {
     say;
     my $ids = [split /,/, $_];
     one($timestamp, $ids);
-    two($ids);
+    two_a($ids);
+    two_b($ids);
     say '';
 }
 
@@ -25,7 +26,7 @@ sub one {
     say $earliest * ($earliest - $timestamp % $earliest);
 }
 
-sub two {
+sub two_a {
     my ($ids) = @_;
     my @deps =
         sort {$a->[1] <=> $b->[1]} # to optimize the search below
@@ -38,6 +39,22 @@ sub two {
 
     foreach (@deps) {
         my ($offset, $id) = @$_;
+        $t->badd($step) while ($t + $offset) % $id != 0;
+        $step->bmul($id);
+    }
+
+    say $t;
+}
+
+sub two_b {
+    my ($ids) = @_;
+
+    my $t    = Math::BigInt->bzero();
+    my $step = Math::BigInt->bone();
+
+    foreach (grep {$ids->[$_] ne 'x'} 0 .. $#$ids) {
+        my $offset = Math::BigInt->new($_);
+        my $id = Math::BigInt->new($ids->[$offset]);
         $t->badd($step) while ($t + $offset) % $id != 0;
         $step->bmul($id);
     }
