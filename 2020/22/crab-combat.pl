@@ -16,12 +16,14 @@ sub play1 {
     my ($p1, $p2) = @_;
 
     while (@$p1 && @$p2) {
+        #say '#' x @$p1, ' ', '#' x @$p2;
         if ($p1->[0] > $p2->[0]) {
             push @$p1, shift(@$p1), shift(@$p2);
         } else {
             push @$p2, shift(@$p2), shift(@$p1);
         }
     }
+    #say '#' x @$p1, ' ', '#' x @$p2;
 
     return @$p1 ? $p1 : $p2;
 }
