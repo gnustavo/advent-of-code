@@ -15,8 +15,6 @@ my %moves = (
     w  => [-2,  0],
 );
 
-my @steps = map {[/(e|ne|nw|se|sw|w)/g]} @input;
-
 my %floor;
 
 foreach my $steps (@input) {
@@ -31,7 +29,7 @@ foreach my $steps (@input) {
 
 sub show {
     my ($day) = @_;
-    say "Day $day: ", scalar true {$_} map {values %$_} values %floor;
+    say "Day $day: ", true {$_} map {values %$_} values %floor;
 }
 
 show(0);
